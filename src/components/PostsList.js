@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectPosts } from '../ducks/postsSlice';
 import { PostAuthor } from './PostAuthor';
+import { ReactionButtons } from './ReactionButtons';
 import { TimeAgo } from './TimeAgo';
 
 export const PostsList = () => {
@@ -10,14 +11,15 @@ export const PostsList = () => {
 
     const orderedPosts = posts.slice().sort((a,b) => b.date.localeCompare(a.date))
 
-    const renderedPosts = orderedPosts.map(({id, title, content, userId, date}) => (
-        <article key={id} >
-            <h3>{title}</h3>
-            <p>{content.substring(0,100)}</p>
+    const renderedPosts = orderedPosts.map((post) => (
+        <article key={post.id} >
+            <h3>{post.title}</h3>
+            <p>{post.content.substring(0,100)}</p>
             <p className='postCredit'>
-                <PostAuthor userId={userId} />
-                <TimeAgo timestamp={date} />
+                <PostAuthor userId={post.userId} />
+                <TimeAgo timestamp={post.date} />
             </p>
+            <ReactionButtons post={post} />
         </article>
     ))
 
